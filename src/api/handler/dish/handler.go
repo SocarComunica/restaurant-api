@@ -2,14 +2,24 @@ package dish
 
 import (
 	"github.com/gin-gonic/gin"
+	"net/http"
 	platformerrors "restaurant-api/internal/platform/error"
 	"restaurant-api/src/api/errors"
+	"restaurant-api/src/api/handler/dish/contract"
 )
 
-type Handler struct{}
+type RandomDishUseCase interface {
+	CreateRandomDish(ctx *gin.Context) (int, error)
+}
 
-func NewDishHandler() Handler {
-	return Handler{}
+type Handler struct {
+	useCase RandomDishUseCase
+}
+
+func NewDishHandler(useCase RandomDishUseCase) Handler {
+	return Handler{
+		useCase: useCase,
+	}
 }
 
 func (h Handler) Handler(ginCtx *gin.Context) {
@@ -17,5 +27,12 @@ func (h Handler) Handler(ginCtx *gin.Context) {
 }
 
 func (h Handler) handler(ginCtx *gin.Context) *platformerrors.APIError {
-	panic("IMPLEMENT THIS SHIT")
+	dishID, err := h.useCase.CreateRandomDish(ginCtx)
+	if err != nil {
+		apiErr := platformerrors.NewInternalServerAPIError("An error has occurred while processing your request", err)
+		return &apiErr
+	}
+
+	ginCtx.JSON(http.StatusCreated, &contract.Response{DishId: dishID})
+	return nil
 }

@@ -20,7 +20,7 @@ func mapRoutes(r *gin.Engine) {
 	handlers := dependence.NewWire()
 
 	dishesGroup := r.Group("/dishes")
-	dishesGroup.POST("", handlers.DishHandler.Handler)
+	dishesGroup.POST("/new-random-dish", handlers.DishHandler.Handler)
 
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{

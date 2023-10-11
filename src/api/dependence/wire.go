@@ -1,6 +1,7 @@
 package dependence
 
 import (
+	dishUseCase "restaurant-api/internal/support/dishes/core/usecase"
 	"restaurant-api/src/api/dependence/container"
 	"restaurant-api/src/api/handler"
 	"restaurant-api/src/api/handler/dish"
@@ -25,5 +26,7 @@ func NewWire() HandlerContainer {
 }
 
 func (s *StartApp) newDishHandler() handler.Handler {
-	return dish.NewDishHandler()
+	// TODO: Implement use case
+	useCase := dishUseCase.NewRandomDishUseCase()
+	return dish.NewDishHandler(useCase)
 }
