@@ -1,4 +1,4 @@
-package entity
+package contract
 
 type Dish struct {
 	ID     int            `json:"id"`

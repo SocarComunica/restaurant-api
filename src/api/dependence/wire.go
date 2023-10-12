@@ -1,32 +1,32 @@
 package dependence
 
 import (
-	dishUseCase "restaurant-api/internal/support/dishes/core/usecase"
 	"restaurant-api/src/api/dependence/container"
 	"restaurant-api/src/api/handler"
-	"restaurant-api/src/api/handler/dish"
+	dishesHandler "restaurant-api/src/api/handler/dish"
+	dishesMapper "restaurant-api/src/api/handler/dish/mapper"
 )
 
 type HandlerContainer struct {
-	container   container.Container
-	DishHandler handler.Handler
+	container         container.Container
+	GetAllDishHandler handler.Handler
 }
 
 type StartApp struct {
-	container container.Container
+	container        container.Container
+	useCaseContainer UseCaseContainer
 }
 
 func NewWire() HandlerContainer {
 	c := container.NewContainer()
-	startApp := StartApp{c}
+	u := NewUseCase(c)
+	startApp := StartApp{c, u}
 	return HandlerContainer{
-		container:   c,
-		DishHandler: startApp.newDishHandler(),
+		container:         c,
+		GetAllDishHandler: startApp.newGetAllDishHandler(),
 	}
 }
 
-func (s *StartApp) newDishHandler() handler.Handler {
-	// TODO: Implement use case
-	useCase := dishUseCase.NewRandomDishUseCase()
-	return dish.NewDishHandler(useCase)
+func (s *StartApp) newGetAllDishHandler() handler.Handler {
+	return dishesHandler.NewGetAllDishHandler(s.useCaseContainer.GetDishesUseCase(), dishesMapper.Mapper{})
 }
