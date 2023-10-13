@@ -1,6 +1,7 @@
 package contract
 
 type Stats struct {
-	Finished int `json:"finished"`
-	Pending  int `json:"pending"`
+	Delivered int `json:"delivered"`
+	Finished  int `json:"finished"`
+	Queued    int `json:"queued"`
 }

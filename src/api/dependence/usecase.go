@@ -3,25 +3,43 @@ package dependence
 import (
 	dishesUseCase "restaurant-api/internal/support/dishes/core/usecase"
 	localDishesRepository "restaurant-api/internal/support/dishes/infraestructure/repository/local"
-	"restaurant-api/src/api/dependence/container"
+	ordersUseCase "restaurant-api/internal/support/orders/core/usecase"
+	localOrdersUseCase "restaurant-api/internal/support/orders/infraestructure/repository/local"
+)
+
+var (
+	dishes *dishesUseCase.UseCase
+	orders *ordersUseCase.UseCase
 )
 
 type UseCaseContainer struct {
-	container     container.Container
-	DishesUseCase *dishesUseCase.UseCase
+	DishesUseCase dishesUseCase.UseCase
+	OrdersUseCase ordersUseCase.UseCase
 }
 
-func NewUseCase(c container.Container) UseCaseContainer {
+func NewUseCase() UseCaseContainer {
+	dishes = GetDishesUseCase()
+	orders = GetOrdersUseCase()
 	return UseCaseContainer{
-		container: c,
+		DishesUseCase: *dishes,
+		OrdersUseCase: *orders,
 	}
 }
 
-func (u UseCaseContainer) GetDishesUseCase() dishesUseCase.UseCase {
-	if u.DishesUseCase == nil {
-		repository := localDishesRepository.NewLocalRepository()
-		useCase := dishesUseCase.NewDishesUseCase(repository)
-		u.DishesUseCase = &useCase
+func GetDishesUseCase() *dishesUseCase.UseCase {
+	if dishes == nil {
+		repository := localDishesRepository.NewRepository()
+		useCase := dishesUseCase.NewDishesUseCase(&repository)
+		dishes = &useCase
 	}
-	return *u.DishesUseCase
+	return dishes
+}
+
+func GetOrdersUseCase() *ordersUseCase.UseCase {
+	if orders == nil {
+		repository := localOrdersUseCase.NewRepository()
+		useCase := ordersUseCase.NewOrdersUseCase(GetDishesUseCase(), &repository)
+		orders = &useCase
+	}
+	return orders
 }

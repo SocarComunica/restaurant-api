@@ -2,39 +2,61 @@ package local
 
 import (
 	"errors"
+	"fmt"
 	"restaurant-api/internal/support/dishes/core/entity"
 )
 
-type LocalRepository struct {
-	dishes []entity.Dish
+type Repository struct {
+	dishes []*entity.Dish
 }
 
-func NewLocalRepository() LocalRepository {
-	return LocalRepository{
+func NewRepository() Repository {
+	return Repository{
 		dishes: loadDishes(),
 	}
 }
 
-func (lr LocalRepository) GetAllDishes() ([]entity.Dish, error) {
-	return lr.dishes, nil
+func (r *Repository) GetAllDishes() ([]entity.Dish, error) {
+	dishes := make([]entity.Dish, len(r.dishes))
+	for i, dish := range r.dishes {
+		dishes[i] = *dish
+	}
+	return dishes, nil
 }
 
-func (lr LocalRepository) GetDish(dishID int) (entity.Dish, error) {
-	for _, dish := range lr.dishes {
+func (r *Repository) GetDish(dishID int) (entity.Dish, error) {
+	i, err := r.GetDishIndex(dishID)
+	if err != nil {
+		return entity.Dish{}, err
+	}
+
+	return *r.dishes[i], nil
+}
+
+func (r *Repository) GetDishIndex(dishID int) (int, error) {
+	for i, dish := range r.dishes {
 		if dish.ID == dishID {
-			return dish, nil
+			return i, nil
 		}
 	}
 
-	return entity.Dish{}, errors.New("dish not found with id")
+	return 0, errors.New(fmt.Sprintf("dish not found with id: %d", dishID))
 }
 
-func (lr LocalRepository) UpdateDish(dishID int, dish entity.Dish) error {
-	panic("implement update dish method on repository")
+func (r *Repository) UpdateDish(dishID int, dish entity.Dish) error {
+	i, err := r.GetDishIndex(dishID)
+	if err != nil {
+		return err
+	}
+
+	r.dishes[i].Stats.Queued = dish.Stats.Queued
+	r.dishes[i].Stats.Finished = dish.Stats.Finished
+
+	return nil
 }
 
-func loadDishes() []entity.Dish {
-	dishes := []entity.Dish{
+func loadDishes() []*entity.Dish {
+	dishes := []*entity.Dish{
 		{
 			ID:   1,
 			Name: "Ensalada de Pollo con Limón y Queso",

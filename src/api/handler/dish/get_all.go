@@ -18,23 +18,23 @@ type Mapper interface {
 	MapEntityToResponse(dish entity.Dish) contract.Dish
 }
 
-type Handler struct {
+type GetAllHandler struct {
 	useCase GetAllDishesUseCase
 	mapper  Mapper
 }
 
-func NewGetAllDishHandler(useCase GetAllDishesUseCase, mapper mapper.Mapper) Handler {
-	return Handler{
+func NewGetAllDishHandler(useCase GetAllDishesUseCase, mapper mapper.Mapper) GetAllHandler {
+	return GetAllHandler{
 		useCase: useCase,
 		mapper:  mapper,
 	}
 }
 
-func (h Handler) Handler(ginCtx *gin.Context) {
+func (h GetAllHandler) Handler(ginCtx *gin.Context) {
 	errors.ErrorWrapper(h.handler, ginCtx)
 }
 
-func (h Handler) handler(ginCtx *gin.Context) *platformerrors.APIError {
+func (h GetAllHandler) handler(ginCtx *gin.Context) *platformerrors.APIError {
 	dishes, err := h.useCase.GetAllDishes(ginCtx)
 	if err != nil {
 		apiErr := platformerrors.NewInternalServerAPIError("An error has occurred while processing your request", err)

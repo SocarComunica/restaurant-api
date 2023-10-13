@@ -21,6 +21,11 @@ func mapRoutes(r *gin.Engine) {
 
 	dishesGroup := r.Group("/dishes")
 	dishesGroup.GET("/", handlers.GetAllDishHandler.Handler)
+	dishesGroup.GET("/:dishID", handlers.GetDishHandler.Handler)
+
+	ordersGroup := r.Group("/orders")
+	ordersGroup.GET("/queue", handlers.GetOrdersQueueHandler.Handler)
+	ordersGroup.POST("/new-random-order", handlers.NewRandomOrderHandler.Handler)
 
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{

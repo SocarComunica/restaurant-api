@@ -13,8 +13,9 @@ func (m Mapper) MapEntityToResponse(dish entity.Dish) contract.Dish {
 		Name:   dish.Name,
 		Recipe: dish.Recipe,
 		Stats: contract.Stats{
-			Finished: dish.Stats.Finished,
-			Pending:  dish.Stats.Pending,
+			Delivered: dish.Stats.Delivered,
+			Finished:  dish.Stats.Finished,
+			Queued:    dish.Stats.Queued,
 		},
 	}
 }
