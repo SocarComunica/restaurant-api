@@ -10,11 +10,13 @@ import (
 )
 
 type HandlerContainer struct {
-	container             container.Container
-	GetAllDishHandler     handler.Handler
-	GetDishHandler        handler.Handler
-	NewRandomOrderHandler handler.Handler
-	GetOrdersQueueHandler handler.Handler
+	container                       container.Container
+	GetAllDishHandler               handler.Handler
+	GetDishHandler                  handler.Handler
+	NewRandomOrderHandler           handler.Handler
+	GetQueuedOrdersQueueHandler     handler.Handler
+	GetInProgressOrdersQueueHandler handler.Handler
+	GetFinishedOrdersQueueHandler   handler.Handler
 }
 
 type StartApp struct {
@@ -27,11 +29,13 @@ func NewWire() HandlerContainer {
 	u := NewUseCase()
 	startApp := StartApp{c, u}
 	return HandlerContainer{
-		container:             c,
-		GetAllDishHandler:     startApp.NewGetAllDishHandler(),
-		GetDishHandler:        startApp.NewGetDishHandler(),
-		NewRandomOrderHandler: startApp.NewNewRandomOrderHandler(),
-		GetOrdersQueueHandler: startApp.NewGetOrdersQueueHandler(),
+		container:                       c,
+		GetAllDishHandler:               startApp.NewGetAllDishHandler(),
+		GetDishHandler:                  startApp.NewGetDishHandler(),
+		NewRandomOrderHandler:           startApp.NewNewRandomOrderHandler(),
+		GetQueuedOrdersQueueHandler:     startApp.NewGetQueuedOrdersQueueHandler(),
+		GetInProgressOrdersQueueHandler: startApp.NewGetInProgressOrdersQueueHandler(),
+		GetFinishedOrdersQueueHandler:   startApp.NewGetFinishedOrdersQueueHandler(),
 	}
 }
 
@@ -47,6 +51,14 @@ func (s StartApp) NewNewRandomOrderHandler() handler.Handler {
 	return ordersHandler.NewNewRandomOrderHandler(&s.useCaseContainer.OrdersUseCase, ordersMapper.Mapper{})
 }
 
-func (s StartApp) NewGetOrdersQueueHandler() handler.Handler {
-	return ordersHandler.NewGetOrdersQueueHandler(&s.useCaseContainer.OrdersUseCase, ordersMapper.Mapper{})
+func (s StartApp) NewGetQueuedOrdersQueueHandler() handler.Handler {
+	return ordersHandler.NewGetQueuedOrdersQueueHandler(&s.useCaseContainer.OrdersUseCase, ordersMapper.Mapper{})
+}
+
+func (s StartApp) NewGetInProgressOrdersQueueHandler() handler.Handler {
+	return ordersHandler.NewGetInProgressOrdersQueueHandler(&s.useCaseContainer.OrdersUseCase, ordersMapper.Mapper{})
+}
+
+func (s StartApp) NewGetFinishedOrdersQueueHandler() handler.Handler {
+	return ordersHandler.NewGetFinishedOrdersQueueHandler(&s.useCaseContainer.OrdersUseCase, ordersMapper.Mapper{})
 }

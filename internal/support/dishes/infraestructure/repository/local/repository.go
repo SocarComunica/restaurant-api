@@ -50,7 +50,9 @@ func (r *Repository) UpdateDish(dishID int, dish entity.Dish) error {
 	}
 
 	r.dishes[i].Stats.Queued = dish.Stats.Queued
+	r.dishes[i].Stats.InProgress = dish.Stats.InProgress
 	r.dishes[i].Stats.Finished = dish.Stats.Finished
+	r.dishes[i].Stats.Delivered = dish.Stats.Delivered
 
 	return nil
 }

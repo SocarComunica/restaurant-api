@@ -9,28 +9,28 @@ import (
 	"restaurant-api/src/api/handler/order/contract"
 )
 
-type GetOrdersQueueUseCase interface {
-	GetQueue(ctx *gin.Context) []entity.Order
+type GetFinishedOrdersQueueUseCase interface {
+	GetFinishedOrdersQueue(ctx *gin.Context) []entity.Order
 }
 
-type GetOrdersQueueHandler struct {
-	useCase GetOrdersQueueUseCase
+type GetFinishedOrdersQueueHandler struct {
+	useCase GetFinishedOrdersQueueUseCase
 	mapper  Mapper
 }
 
-func NewGetOrdersQueueHandler(useCase GetOrdersQueueUseCase, mapper Mapper) GetOrdersQueueHandler {
-	return GetOrdersQueueHandler{
+func NewGetFinishedOrdersQueueHandler(useCase GetFinishedOrdersQueueUseCase, mapper Mapper) GetFinishedOrdersQueueHandler {
+	return GetFinishedOrdersQueueHandler{
 		useCase: useCase,
 		mapper:  mapper,
 	}
 }
 
-func (h GetOrdersQueueHandler) Handler(ginCtx *gin.Context) {
+func (h GetFinishedOrdersQueueHandler) Handler(ginCtx *gin.Context) {
 	commonErrors.ErrorWrapper(h.handler, ginCtx)
 }
 
-func (h GetOrdersQueueHandler) handler(ginCtx *gin.Context) *platformerrors.APIError {
-	orders := h.useCase.GetQueue(ginCtx)
+func (h GetFinishedOrdersQueueHandler) handler(ginCtx *gin.Context) *platformerrors.APIError {
+	orders := h.useCase.GetFinishedOrdersQueue(ginCtx)
 
 	var result []contract.Order
 	for _, order := range orders {
