@@ -1,0 +1,5 @@
+{
+  "marketClient": {
+    "baseURL": "https://utadeoapi-6dae6e29b5b0.herokuapp.com/api/v1/software-architecture/market-place"
+  }
+}
