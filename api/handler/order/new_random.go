@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	commonErrors "restaurant-api/api/errors"
+	"restaurant-api/api/handler/order/contract"
 	platformerrors "restaurant-api/internal/platform/error"
 	"restaurant-api/internal/support/orders/core/entity"
-	commonErrors "restaurant-api/src/api/errors"
-	"restaurant-api/src/api/handler/order/contract"
 )
 
 const (

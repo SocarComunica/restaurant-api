@@ -2,7 +2,7 @@ package main
 
 import (
 	"log"
-	"restaurant-api/src/api"
+	"restaurant-api/api"
 )
 
 func main() {

@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	commonErrors "restaurant-api/api/errors"
 	platformerrors "restaurant-api/internal/platform/error"
-	commonErrors "restaurant-api/src/api/errors"
 )
 
 type UpdateOrdersQueuesUseCase interface {

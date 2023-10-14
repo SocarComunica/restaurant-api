@@ -1,9 +1,11 @@
 package api
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
-	"restaurant-api/src/api/config/static"
-	"restaurant-api/src/api/dependence"
+	"os"
+	"restaurant-api/api/config/static"
+	"restaurant-api/api/dependence"
 )
 
 func StartApp() error {
@@ -13,7 +15,7 @@ func StartApp() error {
 
 	mapRoutes(r)
 
-	return r.Run()
+	return r.Run(fmt.Sprintf("%s:%s", os.Getenv("HOST"), os.Getenv("PORT")))
 }
 
 func mapRoutes(r *gin.Engine) {

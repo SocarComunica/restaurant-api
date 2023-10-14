@@ -1,9 +1,9 @@
 package container
 
 import (
+	"restaurant-api/api/config/static"
+	"restaurant-api/api/config/static/model"
 	"restaurant-api/internal/platform/restful"
-	"restaurant-api/src/api/config/static"
-	"restaurant-api/src/api/config/static/model"
 )
 
 type RestClient struct {

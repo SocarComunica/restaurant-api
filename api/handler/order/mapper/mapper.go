@@ -1,8 +1,8 @@
 package mapper
 
 import (
+	"restaurant-api/api/handler/order/contract"
 	"restaurant-api/internal/support/orders/core/entity"
-	"restaurant-api/src/api/handler/order/contract"
 )
 
 type Mapper struct{}

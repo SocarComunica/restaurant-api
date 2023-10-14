@@ -7,7 +7,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"restaurant-api/src/api/config/static/model"
+	"restaurant-api/api/config/static/model"
 	"runtime"
 )
 

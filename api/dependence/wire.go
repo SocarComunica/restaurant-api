@@ -1,12 +1,12 @@
 package dependence
 
 import (
-	"restaurant-api/src/api/dependence/container"
-	"restaurant-api/src/api/handler"
-	dishesHandler "restaurant-api/src/api/handler/dish"
-	dishesMapper "restaurant-api/src/api/handler/dish/mapper"
-	ordersHandler "restaurant-api/src/api/handler/order"
-	ordersMapper "restaurant-api/src/api/handler/order/mapper"
+	"restaurant-api/api/dependence/container"
+	"restaurant-api/api/handler"
+	"restaurant-api/api/handler/dish"
+	dishesMapper "restaurant-api/api/handler/dish/mapper"
+	"restaurant-api/api/handler/order"
+	ordersMapper "restaurant-api/api/handler/order/mapper"
 )
 
 type HandlerContainer struct {
@@ -42,29 +42,29 @@ func NewWire() HandlerContainer {
 }
 
 func (s StartApp) NewGetAllDishHandler() handler.Handler {
-	return dishesHandler.NewGetAllDishHandler(&s.useCaseContainer.DishesUseCase, dishesMapper.Mapper{})
+	return dish.NewGetAllDishHandler(&s.useCaseContainer.DishesUseCase, dishesMapper.Mapper{})
 }
 
 func (s StartApp) NewGetDishHandler() handler.Handler {
-	return dishesHandler.NewGetHandler(&s.useCaseContainer.DishesUseCase, dishesMapper.Mapper{})
+	return dish.NewGetHandler(&s.useCaseContainer.DishesUseCase, dishesMapper.Mapper{})
 }
 
 func (s StartApp) NewNewRandomOrderHandler() handler.Handler {
-	return ordersHandler.NewNewRandomOrderHandler(&s.useCaseContainer.OrdersUseCase, ordersMapper.Mapper{})
+	return order.NewNewRandomOrderHandler(&s.useCaseContainer.OrdersUseCase, ordersMapper.Mapper{})
 }
 
 func (s StartApp) NewGetQueuedOrdersQueueHandler() handler.Handler {
-	return ordersHandler.NewGetQueuedOrdersQueueHandler(&s.useCaseContainer.OrdersUseCase, ordersMapper.Mapper{})
+	return order.NewGetQueuedOrdersQueueHandler(&s.useCaseContainer.OrdersUseCase, ordersMapper.Mapper{})
 }
 
 func (s StartApp) NewGetInProgressOrdersQueueHandler() handler.Handler {
-	return ordersHandler.NewGetInProgressOrdersQueueHandler(&s.useCaseContainer.OrdersUseCase, ordersMapper.Mapper{})
+	return order.NewGetInProgressOrdersQueueHandler(&s.useCaseContainer.OrdersUseCase, ordersMapper.Mapper{})
 }
 
 func (s StartApp) NewGetFinishedOrdersQueueHandler() handler.Handler {
-	return ordersHandler.NewGetFinishedOrdersQueueHandler(&s.useCaseContainer.OrdersUseCase, ordersMapper.Mapper{})
+	return order.NewGetFinishedOrdersQueueHandler(&s.useCaseContainer.OrdersUseCase, ordersMapper.Mapper{})
 }
 
 func (s StartApp) NewUpdateOrdersQueuesHandler() handler.Handler {
-	return ordersHandler.NewUpdateOrdersQueuesHandler(&s.useCaseContainer.OrdersUseCase)
+	return order.NewUpdateOrdersQueuesHandler(&s.useCaseContainer.OrdersUseCase)
 }

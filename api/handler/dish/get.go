@@ -4,10 +4,10 @@ import (
 	"errors"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	commonErrors "restaurant-api/api/errors"
+	"restaurant-api/api/handler/dish/mapper"
 	platformerrors "restaurant-api/internal/platform/error"
 	"restaurant-api/internal/support/dishes/core/entity"
-	commonErrors "restaurant-api/src/api/errors"
-	"restaurant-api/src/api/handler/dish/mapper"
 	"strconv"
 )
 

@@ -3,11 +3,11 @@ package dish
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"restaurant-api/api/errors"
+	"restaurant-api/api/handler/dish/contract"
+	"restaurant-api/api/handler/dish/mapper"
 	platformerrors "restaurant-api/internal/platform/error"
 	"restaurant-api/internal/support/dishes/core/entity"
-	"restaurant-api/src/api/errors"
-	"restaurant-api/src/api/handler/dish/contract"
-	"restaurant-api/src/api/handler/dish/mapper"
 )
 
 type GetAllDishesUseCase interface {
