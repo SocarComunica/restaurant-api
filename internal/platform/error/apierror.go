@@ -21,10 +21,19 @@ func (e APIError) Error() string {
 const (
 	internalServerError string = "internal_server_error"
 	notFoundError       string = "resource_not_found"
+	badRequestError     string = "bad_request"
 )
 
 func (e APIError) Status() int {
 	return e.ErrorStatus
+}
+
+func NewBadRequestAPIError(message string, err error) APIError {
+	cause := CauseList{}
+	if err != nil {
+		cause = append(cause, err.Error())
+	}
+	return APIError{message, badRequestError, http.StatusBadRequest, cause}
 }
 
 func NewNotFoundAPIError(message string, err error) APIError {

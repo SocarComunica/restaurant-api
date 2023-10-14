@@ -79,8 +79,8 @@ func (u *UseCase) NewRandomOrder(ctx *gin.Context) (*entity.Order, error) {
 }
 
 func (u *UseCase) UpdateOrderQueuedToInProgress(ctx *gin.Context) error {
-	order, len0 := u.queuedOrders.Dequeue()
-	if len0 {
+	order, successful := u.queuedOrders.Dequeue()
+	if !successful {
 		return errors.New("there is no more queued orders")
 	}
 
@@ -115,8 +115,8 @@ func (u *UseCase) UpdateOrderQueuedToInProgress(ctx *gin.Context) error {
 }
 
 func (u *UseCase) UpdateOrderInProgressToFinished(ctx *gin.Context) error {
-	order, len0 := u.inProgressOrders.Dequeue()
-	if len0 {
+	order, successful := u.inProgressOrders.Dequeue()
+	if !successful {
 		return errors.New("there is no more in progress orders")
 	}
 
@@ -151,8 +151,8 @@ func (u *UseCase) UpdateOrderInProgressToFinished(ctx *gin.Context) error {
 }
 
 func (u *UseCase) UpdateOrderFinishedToDelivered(ctx *gin.Context) error {
-	order, len0 := u.queuedOrders.Dequeue()
-	if len0 {
+	order, successful := u.finishedOrders.Dequeue()
+	if !successful {
 		return errors.New("there is no more finished orders")
 	}
 
@@ -182,7 +182,6 @@ func (u *UseCase) UpdateOrderFinishedToDelivered(ctx *gin.Context) error {
 		return err
 	}
 
-	u.inProgressOrders.Enqueue(*order)
 	return nil
 }
 

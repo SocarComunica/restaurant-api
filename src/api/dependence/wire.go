@@ -13,10 +13,11 @@ type HandlerContainer struct {
 	container                       container.Container
 	GetAllDishHandler               handler.Handler
 	GetDishHandler                  handler.Handler
-	NewRandomOrderHandler           handler.Handler
+	CreateNewRandomOrderHandler     handler.Handler
 	GetQueuedOrdersQueueHandler     handler.Handler
 	GetInProgressOrdersQueueHandler handler.Handler
 	GetFinishedOrdersQueueHandler   handler.Handler
+	UpdateOrdersQueuesHandler       handler.Handler
 }
 
 type StartApp struct {
@@ -32,10 +33,11 @@ func NewWire() HandlerContainer {
 		container:                       c,
 		GetAllDishHandler:               startApp.NewGetAllDishHandler(),
 		GetDishHandler:                  startApp.NewGetDishHandler(),
-		NewRandomOrderHandler:           startApp.NewNewRandomOrderHandler(),
+		CreateNewRandomOrderHandler:     startApp.NewNewRandomOrderHandler(),
 		GetQueuedOrdersQueueHandler:     startApp.NewGetQueuedOrdersQueueHandler(),
 		GetInProgressOrdersQueueHandler: startApp.NewGetInProgressOrdersQueueHandler(),
 		GetFinishedOrdersQueueHandler:   startApp.NewGetFinishedOrdersQueueHandler(),
+		UpdateOrdersQueuesHandler:       startApp.NewUpdateOrdersQueuesHandler(),
 	}
 }
 
@@ -61,4 +63,8 @@ func (s StartApp) NewGetInProgressOrdersQueueHandler() handler.Handler {
 
 func (s StartApp) NewGetFinishedOrdersQueueHandler() handler.Handler {
 	return ordersHandler.NewGetFinishedOrdersQueueHandler(&s.useCaseContainer.OrdersUseCase, ordersMapper.Mapper{})
+}
+
+func (s StartApp) NewUpdateOrdersQueuesHandler() handler.Handler {
+	return ordersHandler.NewUpdateOrdersQueuesHandler(&s.useCaseContainer.OrdersUseCase)
 }
