@@ -29,18 +29,24 @@ type DishesUseCase interface {
 	UpdateDishStats(ctx *gin.Context, dishID int, stats dishesEntity.Stats) error
 }
 
+type WarehouseUseCase interface {
+	GetIngredients(ctx *gin.Context, ingredients map[string]int) error
+}
+
 type UseCase struct {
 	repository       Repository
 	dishesUseCase    DishesUseCase
+	warehouseUseCase WarehouseUseCase
 	queuedOrders     *queue.Queue
 	inProgressOrders *queue.Queue
 	finishedOrders   *queue.Queue
 }
 
-func NewOrdersUseCase(dishesUseCase DishesUseCase, repository Repository) UseCase {
+func NewOrdersUseCase(repository Repository, dishesUseCase DishesUseCase, warehouseUseCase WarehouseUseCase) UseCase {
 	return UseCase{
 		repository:       repository,
 		dishesUseCase:    dishesUseCase,
+		warehouseUseCase: warehouseUseCase,
 		queuedOrders:     &queue.Queue{},
 		inProgressOrders: &queue.Queue{},
 		finishedOrders:   &queue.Queue{},
@@ -110,6 +116,10 @@ func (u *UseCase) UpdateOrderQueuedToInProgress(ctx *gin.Context) error {
 		return err
 	}
 
+	err = u.warehouseUseCase.GetIngredients(ctx, dish.Recipe)
+	if err != nil {
+		return err
+	}
 	u.inProgressOrders.Enqueue(*order)
 	return nil
 }
@@ -186,18 +196,18 @@ func (u *UseCase) UpdateOrderFinishedToDelivered(ctx *gin.Context) error {
 }
 
 func (u *UseCase) GetQueuedOrdersQueue(ctx *gin.Context) []entity.Order {
-	return getQueue(u.queuedOrders)
+	return getQueue(ctx, u.queuedOrders)
 }
 
 func (u *UseCase) GetInProgressOrdersQueue(ctx *gin.Context) []entity.Order {
-	return getQueue(u.inProgressOrders)
+	return getQueue(ctx, u.inProgressOrders)
 }
 
 func (u *UseCase) GetFinishedOrdersQueue(ctx *gin.Context) []entity.Order {
-	return getQueue(u.finishedOrders)
+	return getQueue(ctx, u.finishedOrders)
 }
 
-func getQueue(q *queue.Queue) []entity.Order {
+func getQueue(ctx *gin.Context, q *queue.Queue) []entity.Order {
 	var result []entity.Order
 	for _, order := range *q {
 		result = append(result, *order)

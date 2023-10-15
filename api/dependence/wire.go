@@ -27,7 +27,7 @@ type StartApp struct {
 
 func NewWire() HandlerContainer {
 	c := container.NewContainer()
-	u := NewUseCase()
+	u := NewUseCase(c)
 	startApp := StartApp{c, u}
 	return HandlerContainer{
 		container:                       c,
